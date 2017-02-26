@@ -1,0 +1,198 @@
+---
+swagger: '2.0'
+info:
+  title: BookKeeping API
+  description: Use to track your everyday finance.
+  version: "0.0.1"
+# the domain of the service
+host: api.
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /bookkeeping/query:
+    # Inquery all book keeping record
+    get:
+      summary:  Inquery all book keeping record.
+      description: |
+        This endpoint use to inquery all book keeping record with some filter.
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date of records to be inquery.
+          required: false
+          type: string
+          format: date
+        - name: endDate
+          in: query
+          description: End date of records to be inquery.
+          required: false
+          type: string
+          format: date
+        - name: type
+          in: query
+          description: Record type to be inquery.
+          required: false
+          type: string
+          # TODO: Complete all parameters
+      tags:
+        - Inquery
+      responses:
+        200:
+          description: An array of records.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BookKeepingRecord'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /bookkeeping/expense:
+    # Create new expense record
+    post:
+      summary:  Create new expense record.
+      description: |
+        This endpoint use to add a new expense reocrd.
+      parameters:
+        - name: date
+          in: query
+          description: Date of expense record.
+          required: true
+          type: string
+          format: date
+        - name: currency_code
+          in: query
+          description: currency of expense
+          required: true
+          type: string
+        - name: amount
+          in: query
+          description: Amount of expense
+          required: true
+          type: number
+          format: double
+          # TODO: Complete all parameters
+      tags:
+        - Expenses
+      responses:
+        200:
+          description: Confirmation of record created.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+  /bookkeeping/expense/{expenseRecordId}:
+    # Update specific expense record
+    put:
+      summary:  Update specific expense record.
+      description: |
+        This endpoint use to update specific expense reocrd.
+      parameters:
+        - name: expenseRecordId
+          in: path
+          description: Record id of specific expense record.
+          required: true
+          type: integer
+          format: int32
+        - name: currency_code
+          in: query
+          description: currency of expense
+          required: false
+          type: string
+        - name: amount
+          in: query
+          description: Amount of expense
+          required: true
+          type: number
+          format: double
+          # TODO: Complete all parameters
+      tags:
+        - Expenses
+      responses:
+        200:
+          description: Confirmation of record updated.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    # Delete specific expense record
+    delete:
+      summary:  Delete specific expense record.
+      description: |
+        This endpoint use to delete specific expense reocrd.
+      parameters:
+        - name: expenseRecordId
+          in: path
+          description: Record id of specific expense record.
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - Expenses
+      responses:
+        200:
+          description: Confirmation of record deleted.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+    # Inquery specific expense record
+    get:
+      summary:  Inquery specific expense record.
+      description: |
+        This endpoint use to inquery specific expense reocrd.
+      parameters:
+        - name: expenseRecordId
+          in: path
+          description: Record id of specific expense record.
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - Expenses
+      responses:
+        200:
+          description: Expense record.
+          schema:
+            $ref: '#/definitions/ExpenseRecord'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  BookKeepingRecord:
+    type: object
+    properties:
+      record_id:
+        type: integer
+        format: int32
+      record_type:
+        type: string
+      #TODO: Complete all properties.
+  ExpenseRecord:
+    type: object
+    properties:
+      record_id:
+        type: integer
+        format: int32
+      date:
+        type: string
+        format: date
+      currency_code:
+        type: string
+        description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
