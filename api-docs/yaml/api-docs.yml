@@ -256,7 +256,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - incomes
+        - Incomes
       responses:
         200:
           description: Confirmation of record created.
@@ -292,7 +292,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - incomes
+        - Incomes
       responses:
         200:
           description: Confirmation of record updated.
@@ -315,7 +315,7 @@ paths:
           type: integer
           format: int32
       tags:
-        - incomes
+        - Incomes
       responses:
         200:
           description: Confirmation of record deleted.
@@ -351,7 +351,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - transfers
+        - Transfers
       responses:
         200:
           description: Confirmation of record created.
@@ -387,7 +387,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - transfers
+        - Transfers
       responses:
         200:
           description: Confirmation of record updated.
@@ -410,7 +410,7 @@ paths:
           type: integer
           format: int32
       tags:
-        - transfers
+        - Transfers
       responses:
         200:
           description: Confirmation of record deleted.
