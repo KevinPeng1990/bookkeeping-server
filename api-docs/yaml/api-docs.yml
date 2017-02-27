@@ -9,36 +9,56 @@ host: api.
 # array of all schemes that your API supports
 schemes:
   - https
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTPS`
 # will be prefixed to all paths
-basePath: /v1
+basePath: /v0
 produces:
   - application/json
 paths:
-  /bookkeeping/query:
+  /queries/records:
     # Inquery all book keeping record
     get:
+      security:
+       - basicAuth: []
       summary:  Inquery all book keeping record.
       description: |
         This endpoint use to inquery all book keeping record with some filter.
       parameters:
-        - name: startDate
+        - name: user_id
+          in: query
+          description: User id to be inquery.
+          required: true
+          type: string
+        - name: start_date
           in: query
           description: Start date of records to be inquery.
           required: false
           type: string
           format: date
-        - name: endDate
+        - name: end_date
           in: query
           description: End date of records to be inquery.
           required: false
           type: string
           format: date
-        - name: type
+        - name: record_type
           in: query
           description: Record type to be inquery.
           required: false
           type: string
-          # TODO: Complete all parameters
+        - name: account_id
+          in: query
+          description: Account of records to be inquery.
+          required: false
+          type: string
+        - name: currency_code
+          in: query
+          description: Currency of records to be inquery. "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+          required: false
+          type: string
       tags:
         - Inquery
       responses:
@@ -52,9 +72,72 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /bookkeeping/expense:
+  /queries/records/{record_id}:
+    # Inquery specific book keeping record
+    get:
+      security:
+       - basicAuth: []
+      summary:  Inquery specific book keeping record.
+      description: |
+        This endpoint use to inquery specific book keeping record with record id.
+      parameters:
+        - name: user_id
+          in: query
+          description: User id to be inquery.
+          required: true
+          type: string
+        - name: record_id
+          in: path
+          description: Record id to be inquery.
+          required: true
+          type: string
+      tags:
+        - Inquery
+      responses:
+        200:
+          description: A record.
+          schema:
+            $ref: '#/definitions/BookKeepingRecord'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /queries/balances:
+    # Inquery specific user's accounts balance at specific date
+    get:
+      security:
+       - basicAuth: []
+      summary:  Inquery specific user's accounts balance at specific date
+      description: |
+        This endpoint use to inquery specific user's accounts balance at specific date.
+      parameters:
+        - name: user_id
+          in: query
+          description: User id to be inquery.
+          required: true
+          type: string
+        - name: balance_date
+          in: query
+          description: Balance date to be inquery.
+          required: true
+          type: string
+          format: date
+      tags:
+        - Inquery
+      responses:
+        200:
+          description: An array of account balance.
+          schema:
+            $ref: '#/definitions/AccountBalance'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /records/expenses:
     # Create new expense record
     post:
+      security:
+       - basicAuth: []
       summary:  Create new expense record.
       description: |
         This endpoint use to add a new expense reocrd.
@@ -86,14 +169,16 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'  
-  /bookkeeping/expense/{expenseRecordId}:
+  /records/expenses/{expense_record_id}:
     # Update specific expense record
     put:
+      security:
+       - basicAuth: []
       summary:  Update specific expense record.
       description: |
         This endpoint use to update specific expense reocrd.
       parameters:
-        - name: expenseRecordId
+        - name: expense_record_id
           in: path
           description: Record id of specific expense record.
           required: true
@@ -122,11 +207,13 @@ paths:
             $ref: '#/definitions/Error'
     # Delete specific expense record
     delete:
+      security:
+       - basicAuth: []
       summary:  Delete specific expense record.
       description: |
         This endpoint use to delete specific expense reocrd.
       parameters:
-        - name: expenseRecordId
+        - name: expense_record_id
           in: path
           description: Record id of specific expense record.
           required: true
@@ -141,51 +228,254 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'  
-    # Inquery specific expense record
-    get:
-      summary:  Inquery specific expense record.
+  /records/incomes:
+    # Create new income record
+    post:
+      security:
+       - basicAuth: []
+      summary:  Create new income record.
       description: |
-        This endpoint use to inquery specific expense reocrd.
+        This endpoint use to add a new income reocrd.
       parameters:
-        - name: expenseRecordId
+        - name: date
+          in: query
+          description: Date of income record.
+          required: true
+          type: string
+          format: date
+        - name: currency_code
+          in: query
+          description: currency of income
+          required: true
+          type: string
+        - name: amount
+          in: query
+          description: Amount of income
+          required: true
+          type: number
+          format: double
+          # TODO: Complete all parameters
+      tags:
+        - incomes
+      responses:
+        200:
+          description: Confirmation of record created.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+  /records/incomes/{income_record_id}:
+    # Update specific income record
+    put:
+      security:
+       - basicAuth: []
+      summary:  Update specific income record.
+      description: |
+        This endpoint use to update specific income reocrd.
+      parameters:
+        - name: income_record_id
           in: path
-          description: Record id of specific expense record.
+          description: Record id of specific income record.
           required: true
           type: integer
           format: int32
+        - name: currency_code
+          in: query
+          description: currency of income
+          required: false
+          type: string
+        - name: amount
+          in: query
+          description: Amount of income
+          required: true
+          type: number
+          format: double
+          # TODO: Complete all parameters
       tags:
-        - Expenses
+        - incomes
       responses:
         200:
-          description: Expense record.
-          schema:
-            $ref: '#/definitions/ExpenseRecord'
+          description: Confirmation of record updated.
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+    # Delete specific income record
+    delete:
+      security:
+       - basicAuth: []
+      summary:  Delete specific income record.
+      description: |
+        This endpoint use to delete specific income reocrd.
+      parameters:
+        - name: income_record_id
+          in: path
+          description: Record id of specific income record.
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - incomes
+      responses:
+        200:
+          description: Confirmation of record deleted.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+  /records/transfers:
+    # Create new transfer record
+    post:
+      security:
+       - basicAuth: []
+      summary:  Create new transfer record.
+      description: |
+        This endpoint use to add a new transfer reocrd.
+      parameters:
+        - name: date
+          in: query
+          description: Date of transfer record.
+          required: true
+          type: string
+          format: date
+        - name: currency_code
+          in: query
+          description: currency of transfer
+          required: true
+          type: string
+        - name: amount
+          in: query
+          description: Amount of transfer
+          required: true
+          type: number
+          format: double
+          # TODO: Complete all parameters
+      tags:
+        - transfers
+      responses:
+        200:
+          description: Confirmation of record created.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+  /records/transfers/{transfer_record_id}:
+    # Update specific transfer record
+    put:
+      security:
+       - basicAuth: []
+      summary:  Update specific transfer record.
+      description: |
+        This endpoint use to update specific transfer reocrd.
+      parameters:
+        - name: transfer_record_id
+          in: path
+          description: Record id of specific transfer record.
+          required: true
+          type: integer
+          format: int32
+        - name: currency_code
+          in: query
+          description: currency of transfer
+          required: false
+          type: string
+        - name: amount
+          in: query
+          description: Amount of transfer
+          required: true
+          type: number
+          format: double
+          # TODO: Complete all parameters
+      tags:
+        - transfers
+      responses:
+        200:
+          description: Confirmation of record updated.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    # Delete specific transfer record
+    delete:
+      security:
+       - basicAuth: []
+      summary:  Delete specific transfer record.
+      description: |
+        This endpoint use to delete specific transfer reocrd.
+      parameters:
+        - name: transfer_record_id
+          in: path
+          description: Record id of specific transfer record.
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - transfers
+      responses:
+        200:
+          description: Confirmation of record deleted.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
 definitions:
   BookKeepingRecord:
     type: object
     properties:
+      user_id:
+        type: string
       record_id:
         type: integer
         format: int32
       record_type:
         type: string
-      #TODO: Complete all properties.
-  ExpenseRecord:
-    type: object
-    properties:
-      record_id:
+      subject_id:
+        type: string
+      subject_name:
+        type: string
+      subsubject_id:
+        type: string
+      subsubject_name:
+        type: string
+      account_id:
+        type: string
+      account_name:
+        type: string
+      receipt_no:
+        type: string
+      receipt_volumn:
         type: integer
         format: int32
-      date:
-        type: string
-        format: date
       currency_code:
         type: string
         description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+      amount:
+        type: number
+        format: double
+      currency_code_transfer_in:
+        type: string
+        description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+      amount_transfer_in:
+        type: number
+        format: double
+      memo:
+        type: string
+  AccountBalance:
+    type: object
+    properties:
+      uers_id:
+        type: string
+      account_id:
+        type: string
+      balance_date:
+        type: string
+        format: date
+      account_currency:
+        type: string
+        description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+      account_balance:
+        type: integer
+        format: int32
   Error:
     type: object
     properties:
