@@ -161,9 +161,9 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - Expenses
+        - Expense
       responses:
-        200:
+        201:
           description: Confirmation of record created.
         default:
           description: Unexpected error
@@ -197,7 +197,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - Expenses
+        - Expense
       responses:
         200:
           description: Confirmation of record updated.
@@ -220,7 +220,7 @@ paths:
           type: integer
           format: int32
       tags:
-        - Expenses
+        - Expense
       responses:
         200:
           description: Confirmation of record deleted.
@@ -256,9 +256,9 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - Incomes
+        - Income
       responses:
-        200:
+        201:
           description: Confirmation of record created.
         default:
           description: Unexpected error
@@ -292,7 +292,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - Incomes
+        - Income
       responses:
         200:
           description: Confirmation of record updated.
@@ -315,7 +315,7 @@ paths:
           type: integer
           format: int32
       tags:
-        - Incomes
+        - Income
       responses:
         200:
           description: Confirmation of record deleted.
@@ -351,9 +351,9 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - Transfers
+        - Transfer
       responses:
-        200:
+        201:
           description: Confirmation of record created.
         default:
           description: Unexpected error
@@ -387,7 +387,7 @@ paths:
           format: double
           # TODO: Complete all parameters
       tags:
-        - Transfers
+        - Transfer
       responses:
         200:
           description: Confirmation of record updated.
@@ -410,7 +410,7 @@ paths:
           type: integer
           format: int32
       tags:
-        - Transfers
+        - Transfer
       responses:
         200:
           description: Confirmation of record deleted.
@@ -466,9 +466,9 @@ paths:
           schema:
             $ref: "#/definitions/User"
       tags:
-        - user
+        - User
       responses:
-        200:
+        201:
           description: Confirmation of user created.
         default:
           description: Unexpected error
@@ -495,7 +495,7 @@ paths:
           schema:
             $ref: "#/definitions/User"
       tags:
-        - user
+        - User
       responses:
         200:
           description: Confirmation of record created.
@@ -517,7 +517,7 @@ paths:
           required: true
           type: string
       tags:
-        - user
+        - User
       responses:
         200:
           description: Confirmation of record deleted.
@@ -545,7 +545,7 @@ paths:
           required: true
           type: string
       tags:
-        - user
+        - User
       responses:
         200:
           description: login successful
@@ -568,7 +568,7 @@ paths:
           required: true
           type: string
       tags:
-        - user
+        - User
       responses:
         200:
           description: logout successful
