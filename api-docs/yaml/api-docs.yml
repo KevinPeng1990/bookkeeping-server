@@ -418,7 +418,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /records/subjects/:
+  /subjects/:
     # Inquery all subjects
     get:
       security:
