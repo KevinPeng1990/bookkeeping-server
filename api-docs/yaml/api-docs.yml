@@ -27,34 +27,34 @@ paths:
       description: |
         This endpoint use to inquery all book keeping record with some filter.
       parameters:
-        - name: user_id
+        - name: userId
           in: query
           description: User id to be inquery.
           required: true
           type: string
-        - name: start_date
+        - name: startDate
           in: query
           description: Start date of records to be inquery.
           required: false
           type: string
           format: date
-        - name: end_date
+        - name: endDate
           in: query
           description: End date of records to be inquery.
           required: false
           type: string
           format: date
-        - name: record_type
+        - name: recordType
           in: query
           description: Record type to be inquery.
           required: false
           type: string
-        - name: account_id
+        - name: accountId
           in: query
           description: Account of records to be inquery.
           required: false
           type: string
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: Currency of records to be inquery. "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
           required: false
@@ -72,7 +72,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /records/{record_id}:
+  /records/{recordId}:
     # Inquery specific book keeping record
     get:
       security:
@@ -81,12 +81,12 @@ paths:
       description: |
         This endpoint use to inquery specific book keeping record with record id.
       parameters:
-        - name: user_id
+        - name: userId
           in: query
           description: User id to be inquery.
           required: true
           type: string
-        - name: record_id
+        - name: recordId
           in: path
           description: Record id to be inquery.
           required: true
@@ -111,12 +111,12 @@ paths:
       description: |
         This endpoint use to inquery specific user's accounts balance at specific date.
       parameters:
-        - name: user_id
+        - name: userId
           in: query
           description: User id to be inquery.
           required: true
           type: string
-        - name: balance_date
+        - name: balanceDate
           in: query
           description: Balance date to be inquery.
           required: true
@@ -148,7 +148,7 @@ paths:
           required: true
           type: string
           format: date
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: currency of expense
           required: true
@@ -169,7 +169,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /records/expenses/{expense_record_id}:
+  /records/expenses/{expenseRecordId}:
     # Update specific expense record
     put:
       security:
@@ -178,13 +178,13 @@ paths:
       description: |
         This endpoint use to update specific expense reocrd.
       parameters:
-        - name: expense_record_id
+        - name: expenseRecordId
           in: path
           description: Record id of specific expense record.
           required: true
           type: integer
           format: int32
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: currency of expense
           required: false
@@ -213,7 +213,7 @@ paths:
       description: |
         This endpoint use to delete specific expense reocrd.
       parameters:
-        - name: expense_record_id
+        - name: expenseRecordId
           in: path
           description: Record id of specific expense record.
           required: true
@@ -243,7 +243,7 @@ paths:
           required: true
           type: string
           format: date
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: currency of income
           required: true
@@ -264,7 +264,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /records/incomes/{income_record_id}:
+  /records/incomes/{incomeRecordId}:
     # Update specific income record
     put:
       security:
@@ -273,13 +273,13 @@ paths:
       description: |
         This endpoint use to update specific income reocrd.
       parameters:
-        - name: income_record_id
+        - name: incomeRecordId
           in: path
           description: Record id of specific income record.
           required: true
           type: integer
           format: int32
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: currency of income
           required: false
@@ -308,7 +308,7 @@ paths:
       description: |
         This endpoint use to delete specific income reocrd.
       parameters:
-        - name: income_record_id
+        - name: incomeRecordId
           in: path
           description: Record id of specific income record.
           required: true
@@ -338,7 +338,7 @@ paths:
           required: true
           type: string
           format: date
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: currency of transfer
           required: true
@@ -359,7 +359,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /records/transfers/{transfer_record_id}:
+  /records/transfers/{transferRecordId}:
     # Update specific transfer record
     put:
       security:
@@ -368,13 +368,13 @@ paths:
       description: |
         This endpoint use to update specific transfer reocrd.
       parameters:
-        - name: transfer_record_id
+        - name: transferRecordId
           in: path
           description: Record id of specific transfer record.
           required: true
           type: integer
           format: int32
-        - name: currency_code
+        - name: currencyCode
           in: query
           description: currency of transfer
           required: false
@@ -403,7 +403,7 @@ paths:
       description: |
         This endpoint use to delete specific transfer reocrd.
       parameters:
-        - name: transfer_record_id
+        - name: transferRecordId
           in: path
           description: Record id of specific transfer record.
           required: true
@@ -427,14 +427,14 @@ paths:
       description: |
         This endpoint use to inquery all subjects by user id.
       parameters:
-        - name: user_id
+        - name: userId
           in: query
           description: User id to be inquery.
           required: true
           type: string
-        - name: subject_status
+        - name: subjectStatus
           in: query
-          description: subject_status to be inquery.
+          description: subjectStatus to be inquery.
           required: false
           type: string
       tags:
@@ -474,7 +474,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /users/{user_id}:
+  /users/{userId}:
     # Update specific user
     put:
       security:
@@ -483,7 +483,7 @@ paths:
       description: |
         This endpoint use to update specific user.
       parameters:
-        - name: user_id
+        - name: userId
           in: path
           description: user id that need to be updated
           required: true
@@ -511,7 +511,7 @@ paths:
       description: |
         This endpoint use to delete specific user.
       parameters:
-        - name: user_id
+        - name: userId
           in: path
           description: user id that need to be delete
           required: true
@@ -580,40 +580,40 @@ definitions:
   BookKeepingRecord:
     type: object
     properties:
-      user_id:
+      userId:
         type: string
-      record_id:
+      recordId:
         type: integer
         format: int32
-      record_type:
+      recordType:
         type: string
-      subject_id:
+      subjectId:
         type: string
-      subject_name:
+      subjectName:
         type: string
-      subsubject_id:
+      subsubjectId:
         type: string
-      subsubject_name:
+      subsubjectName:
         type: string
-      account_id:
+      accountId:
         type: string
-      account_name:
+      accountName:
         type: string
-      receipt_no:
+      receiptNo:
         type: string
-      receipt_volumn:
+      receiptVolumn:
         type: integer
         format: int32
-      currency_code:
+      currencyCode:
         type: string
         description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
       amount:
         type: number
         format: double
-      currency_code_transfer_in:
+      currencyCodeTransferIn:
         type: string
         description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
-      amount_transfer_in:
+      amountTransferIn:
         type: number
         format: double
       memo:
@@ -621,33 +621,33 @@ definitions:
   AccountBalance:
     type: object
     properties:
-      user_id:
+      userId:
         type: string
-      account_id:
+      accountId:
         type: string
-      balance_date:
+      balanceDate:
         type: string
         format: date
-      account_currency:
+      accountCurrency:
         type: string
         description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
-      account_balance:
+      accountBalance:
         type: integer
         format: int32
   Subject:
     type: object
     properties:
-      user_id:
+      userId:
         type: string
-      subject_id:
+      subjectId:
         type: string
-      subject_name:
+      subjectName:
         type: string
-      subject_type:
+      subjectType:
         type: string
-      subject_status:
+      subjectStatus:
         type: string
-      subject_order:
+      subjectOrder:
         type: integer
         format: int32
       subsubject:
@@ -655,32 +655,32 @@ definitions:
   Subsubject:
     type: object
     properties:
-      subsubject_id:
+      subsubjectId:
         type: string
-      subsubject_name:
+      subsubjectName:
         type: string
-      subsubject_status:
+      subsubjectStatus:
         type: string
-      subsubject_order:
+      subsubjectOrder:
         type: integer
         format: int32
   User:
     type: object
     properties:
-      user_id:
+      userId:
         type: string
-      user_name:
+      userName:
         type: string
-      first_name:
+      firstName:
         type: string
-      last_name:
+      lastName:
         type: string
       email:
         type: string
       password:
         type: string
         format: password
-      user_status:
+      userStatus:
         type: string
   Error:
     type: object
