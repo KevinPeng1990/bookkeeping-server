@@ -18,7 +18,7 @@ basePath: /v0
 produces:
   - application/json
 paths:
-  /queries/records:
+  /records:
     # Inquery all book keeping record
     get:
       security:
@@ -72,7 +72,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /queries/records/{record_id}:
+  /records/{record_id}:
     # Inquery specific book keeping record
     get:
       security:
@@ -102,7 +102,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /queries/balances:
+  /records/balances:
     # Inquery specific user's accounts balance at specific date
     get:
       security:
@@ -168,7 +168,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
   /records/expenses/{expense_record_id}:
     # Update specific expense record
     put:
@@ -227,7 +227,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
   /records/incomes:
     # Create new income record
     post:
@@ -263,7 +263,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
   /records/incomes/{income_record_id}:
     # Update specific income record
     put:
@@ -322,7 +322,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
   /records/transfers:
     # Create new transfer record
     post:
@@ -358,7 +358,7 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
   /records/transfers/{transfer_record_id}:
     # Update specific transfer record
     put:
@@ -417,7 +417,165 @@ paths:
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
+  /records/subjects/:
+    # Inquery all subjects
+    get:
+      security:
+       - basicAuth: []
+      summary:  Inquery all subjects by user id.
+      description: |
+        This endpoint use to inquery all subjects by user id.
+      parameters:
+        - name: user_id
+          in: query
+          description: User id to be inquery.
+          required: true
+          type: string
+        - name: subject_status
+          in: query
+          description: subject_status to be inquery.
+          required: false
+          type: string
+      tags:
+        - Inquery
+      responses:
+        200:
+          description: An array of subjects.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Subject'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users:
+    # Create new user
+    post:
+      security:
+       - basicAuth: []
+      summary: Create user
+      description: |
+        This endpoint use to create new user.
+      parameters:
+        - name: body
+          in: body
+          description: User object to be created.
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      tags:
+        - user
+      responses:
+        200:
+          description: Confirmation of user created.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/{user_id}:
+    # Update specific user
+    put:
+      security:
+       - basicAuth: []
+      summary: Update specific user
+      description: |
+        This endpoint use to update specific user.
+      parameters:
+        - name: user_id
+          in: path
+          description: user id that need to be updated
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      tags:
+        - user
+      responses:
+        200:
+          description: Confirmation of record created.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    # Delete specific user
+    delete:
+      security:
+       - basicAuth: []
+      summary: Delete specific user
+      description: |
+        This endpoint use to delete specific user.
+      parameters:
+        - name: user_id
+          in: path
+          description: user id that need to be delete
+          required: true
+          type: string
+      tags:
+        - user
+      responses:
+        200:
+          description: Confirmation of record deleted.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/login:
+    # Logs user into the system
+    get:
+      security:
+       - basicAuth: []
+      summary: Logs user into the system
+      description: |
+        This endpoint use to logs user into the system.
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+      tags:
+        - user
+      responses:
+        200:
+          description: login successful
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/logout:
+    # Logs out current logged in user session
+    get:
+      security:
+       - basicAuth: []
+      summary: Logs out current logged in user session
+      description: |
+        This endpoint use to logs out current logged in user session.
+      parameters:
+        - name: username
+          in: query
+          description: The user name for logout
+          required: true
+          type: string
+      tags:
+        - user
+      responses:
+        200:
+          description: logout successful
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   BookKeepingRecord:
     type: object
@@ -463,7 +621,7 @@ definitions:
   AccountBalance:
     type: object
     properties:
-      uers_id:
+      user_id:
         type: string
       account_id:
         type: string
@@ -476,6 +634,54 @@ definitions:
       account_balance:
         type: integer
         format: int32
+  Subject:
+    type: object
+    properties:
+      user_id:
+        type: string
+      subject_id:
+        type: string
+      subject_name:
+        type: string
+      subject_type:
+        type: string
+      subject_status:
+        type: string
+      subject_order:
+        type: integer
+        format: int32
+      subsubject:
+        $ref: '#/definitions/Subsubject'
+  Subsubject:
+    type: object
+    properties:
+      subsubject_id:
+        type: string
+      subsubject_name:
+        type: string
+      subsubject_status:
+        type: string
+      subsubject_order:
+        type: integer
+        format: int32
+  User:
+    type: object
+    properties:
+      user_id:
+        type: string
+      user_name:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+      user_status:
+        type: string
   Error:
     type: object
     properties:
